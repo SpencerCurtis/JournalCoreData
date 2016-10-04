@@ -10,7 +10,7 @@ enum CoreDataStack {
 	
 	static let container: NSPersistentContainer = {
 		
-		let container = NSPersistentContainer(name: "PlaylistCoreData")
+		let container = NSPersistentContainer(name: "Journal")
 		container.loadPersistentStores() { (storeDescription, error) in
 			if let error = error as NSError? {
 				fatalError("Unresolved error \(error), \(error.userInfo)")
