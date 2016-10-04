@@ -10,8 +10,8 @@ import XCTest
 
 class JournalUITests: XCTestCase {
     
-    private let testTitle = "Test Title"
-    private let testBodyText = "Lorem ipsum doler init."
+    fileprivate let testTitle = "Test Title"
+    fileprivate let testBodyText = "Lorem ipsum doler init."
     
     override func setUp() {
         super.setUp()
@@ -36,12 +36,12 @@ class JournalUITests: XCTestCase {
         app.navigationBars["Journal.EntryListTableView"].buttons["Add"].tap()
         app.buttons["Clear"].tap()
         
-        let element = app.otherElements.containingType(.NavigationBar, identifier:"Title").childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element
-        let textField = element.childrenMatchingType(.TextField).element
+        let element = app.otherElements.containing(.navigationBar, identifier:"Title").children(matching: .other).element.children(matching: .other).element.children(matching: .other).element
+        let textField = element.children(matching: .textField).element
         textField.tap()
         textField.typeText(testTitle)
         
-        let textView = element.childrenMatchingType(.TextView).element
+        let textView = element.children(matching: .textView).element
         textView.tap()
         textView.typeText(testBodyText)
         
@@ -55,7 +55,7 @@ class JournalUITests: XCTestCase {
         
         saveButton.tap()
         
-        app.tables.staticTexts[testTitle]
+        let _ = app.tables.staticTexts[testTitle]
         
         let testEntry = EntryController.sharedController.entries.first
         

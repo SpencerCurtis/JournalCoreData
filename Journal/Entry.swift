@@ -11,11 +11,11 @@ import CoreData
 
 class Entry: NSManagedObject {
 
-    convenience init(title: String, text: String, timestamp: NSDate = NSDate(), context: NSManagedObjectContext = Stack.sharedStack.managedObjectContext) {
+    convenience init(title: String, text: String, timestamp: Date = Date(), context: NSManagedObjectContext = Stack.sharedStack.managedObjectContext) {
         
-        let entity = NSEntityDescription.entityForName("Entry", inManagedObjectContext: context)!
+        let entity = NSEntityDescription.entity(forEntityName: "Entry", in: context)!
         
-        self.init(entity: entity, insertIntoManagedObjectContext: context)
+        self.init(entity: entity, insertInto: context)
         
         self.title = title
         self.text = text

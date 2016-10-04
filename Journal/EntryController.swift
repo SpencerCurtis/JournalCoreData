@@ -15,23 +15,23 @@ class EntryController {
     
     var entries: [Entry] {
         
-        let request = NSFetchRequest(entityName: "Entry")
+		let request: NSFetchRequest<Entry> = NSFetchRequest(entityName: "Entry")
         
         do {
-            return try Stack.sharedStack.managedObjectContext.executeFetchRequest(request) as! [Entry]
+            return try Stack.sharedStack.managedObjectContext.fetch(request)
         } catch {
             return []
         }
     }
     
-    func addEntry(entry: Entry) {
+    func addEntry(_ entry: Entry) {
         
         saveToPersistentStorage()
     }
     
-    func removeEntry(entry: Entry) {
+    func removeEntry(_ entry: Entry) {
         
-        entry.managedObjectContext?.deleteObject(entry)
+        entry.managedObjectContext?.delete(entry)
         saveToPersistentStorage()
     }
     

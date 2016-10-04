@@ -11,8 +11,8 @@ import XCTest
 
 class JournalTests: XCTestCase {
     
-    private let testTitle = "Test Title"
-    private let testBodyText = "Lorem ipsum doler init."
+    fileprivate let testTitle = "Test Title"
+    fileprivate let testBodyText = "Lorem ipsum doler init."
     
     let controller = EntryController.sharedController
     
@@ -26,7 +26,7 @@ class JournalTests: XCTestCase {
         super.tearDown()
         
         // Resets persisted entries
-        controller.entries = []
+        //controller.entries = []
         
         // MARK: Part 3
         controller.saveToPersistentStorage()
@@ -80,9 +80,9 @@ class JournalTests: XCTestCase {
         
         XCTAssert(controller.entries.contains(testEntry), "Entry object not added to EntryController's entries array.")
         
-        controller.entries = []
+       // controller.entries = []
         
-        controller.loadFromPersistentStorage()
+       // controller.loadFromPersistentStorage()
         
         if let restoredEntry = controller.entries.last {
             
