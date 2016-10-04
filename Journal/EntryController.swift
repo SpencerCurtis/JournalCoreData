@@ -15,30 +15,27 @@ class EntryController {
     
     var entries: [Entry] {
         
-		let request: NSFetchRequest<Entry> = NSFetchRequest(entityName: "Entry")
+		let request: NSFetchRequest<Entry> = Entry.fetchRequest()
         
         do {
-            return try Stack.sharedStack.managedObjectContext.fetch(request)
+            return try CoreDataStack.context.fetch(request)
         } catch {
             return []
         }
     }
     
-    func addEntry(_ entry: Entry) {
-        
+    func add(entry: Entry) {
         saveToPersistentStorage()
     }
     
-    func removeEntry(_ entry: Entry) {
-        
+    func remove(entry: Entry) {
         entry.managedObjectContext?.delete(entry)
         saveToPersistentStorage()
     }
     
     func saveToPersistentStorage() {
-        
         do {
-            try Stack.sharedStack.managedObjectContext.save()
+            try CoreDataStack.context.save()
         } catch {
             print("Error saving Managed Object Context. Items not saved.")
         }

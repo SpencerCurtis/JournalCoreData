@@ -9,19 +9,14 @@
 import UIKit
 
 class EntryListTableViewController: UITableViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
+	
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         tableView.reloadData()
     }
     
-    // MARK: - Table view data source
+    // MARK: UITableViewDataSource/Delegate
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return EntryController.sharedController.entries.count
@@ -30,7 +25,7 @@ class EntryListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath)
 
-        let entry = EntryController.sharedController.entries[(indexPath as NSIndexPath).row]
+        let entry = EntryController.sharedController.entries[indexPath.row]
         
         cell.textLabel?.text = entry.title
 
@@ -40,15 +35,16 @@ class EntryListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            let entry = EntryController.sharedController.entries[(indexPath as NSIndexPath).row]
+            let entry = EntryController.sharedController.entries[indexPath.row]
             
-            EntryController.sharedController.removeEntry(entry)
-            
+			EntryController.sharedController.remove(entry: entry)
+			
             // Delete the row from the table view
             tableView.deleteRows(at: [indexPath], with: .fade)
-            
         }
     }
+	
+	// MARK: Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
@@ -57,22 +53,13 @@ class EntryListTableViewController: UITableViewController {
             if let detailViewController = segue.destination as? EntryDetailViewController {
                 
                 // Following line forces the view from Storyboard to load UI elements to make available for testing
-                _ = detailViewController.view
-                
-                let indexPath = tableView.indexPathForSelectedRow
-                
-                if let selectedRow = (indexPath as NSIndexPath?)?.row {
+				detailViewController.loadViewIfNeeded()
+				
+                if let selectedRow = tableView.indexPathForSelectedRow?.row {
                     let entry = EntryController.sharedController.entries[selectedRow]
-                    detailViewController.updateWithEntry(entry)
+					detailViewController.entry = entry
                 }
             }
         }
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
 }

@@ -9,27 +9,24 @@
 import UIKit
 
 class EntryDetailViewController: UIViewController, UITextFieldDelegate {
-    
-    @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var bodyTextView: UITextView!
-    
-    var entry: Entry?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		updateViews()
+	}
+	
+	// MARK: Actions
+	
     @IBAction func saveButtonTapped(_ sender: AnyObject) {
         
         if let entry = self.entry {
             entry.title = self.titleTextField.text!
             entry.text = self.bodyTextView.text
-            entry.timestamp = Date()
+            entry.timestamp = Date() as NSDate
         } else {
             let newEntry = Entry(title: self.titleTextField.text!, text: self.bodyTextView.text)
-            EntryController.sharedController.addEntry(newEntry)
+			EntryController.sharedController.add(entry: newEntry)
             self.entry = newEntry
         }
         
@@ -41,21 +38,30 @@ class EntryDetailViewController: UIViewController, UITextFieldDelegate {
         titleTextField.text = ""
         bodyTextView.text = ""
     }
-    
-    func updateWithEntry(_ entry: Entry) {
-        self.entry = entry
-        
-        self.titleTextField.text = entry.title
-        self.bodyTextView.text = entry.text
-    }
-    
+	
     // MARK: UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         textField.resignFirstResponder()
-        
         return true
     }
+	
+	// MARK: Private
+	
+	private func updateViews() {
+		guard let entry = entry else { return }
+		self.titleTextField.text = entry.title
+		self.bodyTextView.text = entry.text
+	}
+	
+	// MARK: Properties
+	
+	var entry: Entry? {
+		didSet {
+			updateViews()
+		}
+	}
 
+	@IBOutlet weak var titleTextField: UITextField!
+	@IBOutlet weak var bodyTextView: UITextView!
 }
